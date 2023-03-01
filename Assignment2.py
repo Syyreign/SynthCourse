@@ -9,14 +9,12 @@ import mido
 from rtmidi.midiconstants import NOTE_ON, NOTE_OFF
 
 def main():
-    ##print(complex_multiply((6, 8), 2))
-    amplitude_estimation()
-    ##complex_plot()
 
-
-    #equal_temperaments()
+    #print(complex_multiply((6, 8), 2))
+    ##amplitude_estimation()
+    complex_plot()
+    ##equal_temperaments()
     ##midi_arpeggiator((60, 62, 67, 60), 100, 2)
-    pass
 
 
 ## The first value of the list is the real number with the second
@@ -24,6 +22,7 @@ def main():
 ## Ex. 2 + j represented as [2, 1]
 ## Ex. -5j + 4 represented as [4, -5]
 def complex_multiply(complex_number, complex_multiplier):
+    print("multiplying: ", complex_number," by ", complex_multiplier)
     return(complex_number[1] * complex_multiplier * -1, complex_number[0] * complex_multiplier)
 
 def amplitude_estimation():
@@ -32,33 +31,37 @@ def amplitude_estimation():
     fs = 44100
     duration = 1.0
 
+    ## The scalar for the samples
     r0_scalar = random.random()
     r1_scalar = random.random()
     r2_scalar = random.random()
 
+    ## The wave phase shift
     r0_phase = random.uniform(0.0, 44100.0)
     r1_phase = random.uniform(0.0, 44100.0)
     r2_phase = random.uniform(0.0, 44100.0)
 
-    samples0 = (np.sin((2 * np.pi * np.arange(fs * duration) * 100.0 / fs) + r0_phase)).astype(np.float32) * r0_scalar
-    samples1 = (np.sin((2 * np.pi * np.arange(fs * duration) * 200.0 / fs) + r1_phase)).astype(np.float32) * r1_scalar
-    samples2 = (np.sin((2 * np.pi * np.arange(fs * duration) * 300.0 / fs) + r2_phase)).astype(np.float32) * r2_scalar
+    samples0 = (np.sin((2 * np.pi * np.arange(fs * duration) * 100.0 / fs) - r0_phase)).astype(np.float32) * r0_scalar
+    samples1 = (np.sin((2 * np.pi * np.arange(fs * duration) * 200.0 / fs) - r1_phase)).astype(np.float32) * r1_scalar
+    samples2 = (np.sin((2 * np.pi * np.arange(fs * duration) * 300.0 / fs) - r2_phase)).astype(np.float32) * r2_scalar
 
-    samples_amp = (np.sin((2 * np.pi * np.arange(fs * duration) * 100.0 / fs) + r0_phase)).astype(np.float32)
+    ## The standard amplitude of this frequency
+    samples_amp = (np.sin((2 * np.pi * np.arange(fs * duration) * 100.0 / fs) - r0_phase)).astype(np.float32)
     amp_est0 = (np.dot(samples0, samples_amp) * 2)/fs
-    samples_amp = (np.sin((2 * np.pi * np.arange(fs * duration) * 200.0 / fs) + r1_phase)).astype(np.float32)
+    samples_amp = (np.sin((2 * np.pi * np.arange(fs * duration) * 200.0 / fs) - r1_phase)).astype(np.float32)
     amp_est1 = (np.dot(samples1, samples_amp) * 2)/fs
-    samples_amp = (np.sin((2 * np.pi * np.arange(fs * duration) * 300.0 / fs) + r2_phase)).astype(np.float32)
+    samples_amp = (np.sin((2 * np.pi * np.arange(fs * duration) * 300.0 / fs) - r2_phase)).astype(np.float32)
     amp_est2 = (np.dot(samples2, samples_amp) * 2)/fs
 
-    #print(get_phase_est_brute(samples0, fs, 1.0, 100))
-
-    print(get_phase_est(samples0/r0_scalar, fs, 1.0, 100))
+    phase_est0 = get_phase_est_brute(samples0, fs, 1.0, 100)
+    phase_est1 = get_phase_est_brute(samples1, fs, 1.0, 200)
+    phase_est2 = get_phase_est_brute(samples2, fs, 1.0, 300)
 
     combined_samples = 0.3333 * np.add(np.add(samples0, samples1), samples2)
 
     output_bytes = combined_samples.tobytes()
 
+    ## Opens a stream to play the audio
     stream = p.open(format=pyaudio.paFloat32,
                     channels=1,
                     rate=fs,
@@ -73,16 +76,18 @@ def amplitude_estimation():
 
     plot_samples = 500
 
-    plot_sample(samples0[:plot_samples], samples1[:plot_samples], samples2[:plot_samples], combined_samples[:plot_samples], plot_samples, amp_est0, amp_est1, amp_est2)
+    plot_sample(samples0[:plot_samples], samples1[:plot_samples], samples2[:plot_samples], combined_samples[:plot_samples], plot_samples, amp_est0, amp_est1, amp_est2, phase_est0, phase_est1, phase_est2)
 
+## The brute force to find the phase shift by checking each do product
 def get_phase_est_brute(samples, fs: float, duration: float, frequency: float):
     highest_dot = -1
     dot_index = 0
 
-    period = ((fs*2)/frequency)
+    period = (fs/frequency)
+    print(period)
 
     for i in range(int(period)):
-        basis_samples = (np.sin((2 * np.pi * np.arange(fs * duration) * frequency / fs) + i)).astype(np.float32)
+        basis_samples = (np.sin((2 * np.pi * np.arange(fs * duration) * frequency / fs) - i)).astype(np.float32)
 
         current_dot = np.dot(samples, basis_samples)
         if(current_dot > highest_dot):
@@ -91,6 +96,7 @@ def get_phase_est_brute(samples, fs: float, duration: float, frequency: float):
         
     return dot_index
 
+
 def get_phase_est(samples, fs: float, duration: float, frequency: float):
     sin_samples = (np.sin((2 * np.pi * np.arange(fs * duration) * frequency / fs))).astype(np.float32)
     cos_samples = (np.cos((2 * np.pi * np.arange(fs * duration) * frequency / fs))).astype(np.float32)
@@ -98,16 +104,17 @@ def get_phase_est(samples, fs: float, duration: float, frequency: float):
     print(np.dot(samples, sin_samples), ", ", np.dot(samples, cos_samples))
         
 
-def plot_sample(samples0, samples1, samples2, combined_samples, plot_samples, est0, est1, est2):
+## Plot the samples
+def plot_sample(samples0, samples1, samples2, combined_samples, plot_samples, est0, est1, est2, p_est0, p_est1, p_est2):
 
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    ax.plot(np.arange(plot_samples), samples0, label="Est Amplitude: " + str(round(est0,3)))
-    ax.plot(np.arange(plot_samples), samples1, label="Est Amplitude: " + str(round(est1,3)))
-    ax.plot(np.arange(plot_samples), samples2, label="Est Amplitude: " + str(round(est2,3)))
+    ax.plot(np.arange(plot_samples), samples0, label="Est Amplitude: " + str(round(est0,3)) + " Est Phase: "+ str(p_est0))
+    ax.plot(np.arange(plot_samples), samples1, label="Est Amplitude: " + str(round(est1,3)) + " Est Phase: "+ str(p_est1))
+    ax.plot(np.arange(plot_samples), samples2, label="Est Amplitude: " + str(round(est2,3)) + " Est Phase: "+ str(p_est2))
     ax.plot(np.arange(plot_samples), combined_samples)
     ax.legend(loc="upper left")
-    ax.set_ylim(-1.0, 1.0)
+    ax.set_ylim(-1.5, 1.5)
     plt.show()
 
 ## A midi arpeggiator.
@@ -154,6 +161,7 @@ def midi_arpeggiator(notes, tempo, mode):
             time.sleep(60/tempo)
             port.send(mido.Message('note_off', note=notes[i]))  
 
+
 def equal_temperaments():
     p = pyaudio.PyAudio()
     fs = 44100
@@ -180,8 +188,10 @@ def play_note(stream, duration, frequency, fs):
     output_bytes = samples.tobytes()
     stream.write(output_bytes)
 
+## Create a adsr for the arpeggiator
 def adsr(samples, fs):
 
+    ## Hardcoded adsr values
     a = 0.15
     d = 0.2
     s = 0.45
@@ -211,9 +221,10 @@ def adsr(samples, fs):
 
     np.multiply(samples, adsr, samples)
 
-
+## Plot the 3 imaginary circles
 def complex_plot():
     
+    ## Time entered to show on the clock. Values are unchecked, so could cause crashing
     time = input("Enter a time (Ex: 4:15): \n")
     split_time = time.split(":")
     split_time = int(split_time[0]),int(split_time[1])

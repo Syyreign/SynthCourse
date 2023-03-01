@@ -1,7 +1,7 @@
 # Assignment 2
 
 ## Overview
-Assignment 2. Assignment2.py generally covers question 1 to question 8
+Assignment 2. Assignment2.py generally covers question 1 to question 8. I do want to return to this assignment at a later date, and do the retro game question since that seems fun. I also would like to fix some of my bad coding in here, but times limited.
 
 ## **MIDI to MIDI communication**
 For the MIDI to MIDI communication it took some time to get the sound to play through a device. At first I was trying to plug the Roland keyboard directly into a small device powered Arpeggiator. For some reason this device was not able to play audio out.

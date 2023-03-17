@@ -14,7 +14,7 @@ def main():
     ##amplitude_estimation()
     complex_plot()
     ##equal_temperaments()
-    ##midi_arpeggiator((60, 62, 67, 60), 100, 2)
+    ##midi_arpeggiator((60, 62, 67, 60, 45, 30, 62, 50), 100, 2)
 
 
 ## The first value of the list is the real number with the second

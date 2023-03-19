@@ -19,3 +19,16 @@ Coffee Cup Spectra 1
 
 Coffe Cup Spectra 2
 ![Coffee Cup Spectra 2](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/Cup2Spectra.png)
+
+## **4 Additive Synthesis Coffee Mugs**
+When playing both of the sounds back to back, you can kind of tell which coffee mug is which. However, since we are limited to only 4 oscillators, the sound is very artificial, and struggles to capture some of the complicated ringing of the mug.
+
+## **5 Modal Synthesis Coffee Mugs**
+The modal synthesis sounds noticably more natural than the additive. Its easier to pick out which coffee mug is which since they have slightly different frequencies when they ring, and this is picked up by the synthesis.
+
+## **6 Compare the mangitude spectra**
+Coffee Cup 1 Additive Synthesis Spectra
+![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/AdditiveCup1Spectra.png)
+Coffee Cup 1 Modal Synthesis Spectra
+![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/ModalCup1Spectra.png)
+

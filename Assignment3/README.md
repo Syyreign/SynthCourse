@@ -34,6 +34,8 @@ Coffee Cup 1 Modal Synthesis Spectra
 
 Coffee Cup 2 Additive Synthesis Spectra
 ![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/AdditiveCup2Spectra.png)
-Coffee Cup 1 Modal Synthesis Spectra
+Coffee Cup 2 Modal Synthesis Spectra
 ![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/ModalCup2Spectra.png)
+
+When comparing Additive vs Spectra, its noticable how the modal creates a more long lasting and bell like noise, while the additive is more artificial. This is hard to spot in the Spectra. However what is noticable in the spectra, is how the lower end notes almost disappears for the modal approximation. This isn't completely noticable in the audio at first, but the modal can be perceived to lack punch compared to the additive.
 

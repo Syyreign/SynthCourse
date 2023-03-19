@@ -32,3 +32,8 @@ Coffee Cup 1 Additive Synthesis Spectra
 Coffee Cup 1 Modal Synthesis Spectra
 ![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/ModalCup1Spectra.png)
 
+Coffee Cup 2 Additive Synthesis Spectra
+![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/AdditiveCup2Spectra.png)
+Coffee Cup 1 Modal Synthesis Spectra
+![Coffee Cup Spectra](https://raw.githubusercontent.com/Syyreign/SynthCourse/main/Assignment3/ModalCup2Spectra.png)
+

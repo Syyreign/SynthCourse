@@ -2,6 +2,9 @@
 
 Paper used http://persianney.com/kvdoelcsubc/publications/prep04.pdf
 
+## **Overview**
+For this assignnment I tried implementing a water droplet noise simulation in python. Overall, this was a fantastic assignment, and by far my favourite of the course. I'm probably going to recreate it in rust since this was so cool. For now though, this will have to do.
+
 ## **1**
 As the paper describes, water on its own does not create a large noise. The sound we hear from water droplets and bubbles come from the trapping of air under the waters surface. When this pocket of air collapses, it produces a sinosoidal sound. Its explained that volume pulsation is the main idea behind a bubble noise, with the bubble being a compressible region within the water which is itself incompressible. We can model this interaction using a spring mass system.
 
